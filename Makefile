@@ -10,6 +10,7 @@ CVSTAG=yum-$(subst .,_,$(VERSION)-$(RELEASE))
 PYTHON=python
 WEBHOST = yum.baseurl.org
 WEB_DOC_PATH = /srv/projects/yum/web/download/docs/yum-api/
+ROOT = /root/git/yum/
 
 all: subdirs
 
@@ -22,16 +23,16 @@ subdirs:
 	for d in $(SUBDIRS); do make PYTHON=$(PYTHON) -C $$d; [ $$? = 0 ] || exit 1 ; done
 
 install:
-	mkdir -p $(DESTDIR)/usr/share/yum-cli
+	mkdir -p $(ROOT)/usr/share/yum-cli
 	for p in $(PYFILES) ; do \
-		install -m 644 $$p $(DESTDIR)/usr/share/yum-cli/$$p; \
+		install -m 644 $$p $(ROOT)/usr/share/yum-cli/$$p; \
 	done
-	chmod 755 $(DESTDIR)/usr/share/yum-cli/completion-helper.py
-	mv $(DESTDIR)/usr/share/yum-cli/yum-updatesd.py $(DESTDIR)/usr/share/yum-cli/yumupd.py
-	$(PYTHON) -c "import compileall; compileall.compile_dir('$(DESTDIR)/usr/share/yum-cli', 1, '/usr/share/yum-cli', 1)"
+	chmod 755 $(ROOT)/usr/share/yum-cli/completion-helper.py
+	mv $(ROOT)/usr/share/yum-cli/yum-updatesd.py $(ROOT)/usr/share/yum-cli/yumupd.py
+	$(PYTHON) -c "import compileall; compileall.compile_dir('$(ROOT)/usr/share/yum-cli', 1, '/usr/share/yum-cli', 1)"
 
-	mkdir -p $(DESTDIR)/usr/bin $(DESTDIR)/usr/sbin
-	install -m 755 bin/yum.py $(DESTDIR)/usr/bin/yum
+	mkdir -p $(ROOT)/usr/bin $(ROOT)/usr/sbin
+	install -m 755 bin/yum.py $(ROOT)/usr/bin/yum
 	install -m 755 bin/yum-updatesd.py $(DESTDIR)/usr/sbin/yum-updatesd
 
 	mkdir -p $(DESTDIR)/var/cache/yum
